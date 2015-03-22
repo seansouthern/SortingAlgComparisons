@@ -9,6 +9,10 @@
 
 #include "Algorithms.hpp"
 
+// We need to initialize two static counters for recording the work
+//  done by the recursive sort algorithms.
+double Algorithms::staticCompCounter = 0;
+double Algorithms::staticSwapCounter = 0;
 
 void printArray(std::string * wordArray)
 {
@@ -76,7 +80,7 @@ int main()
 	std::string token;
 	std::string delimiter = " ";
 	int startPos = 0;
-	int endPos = buffString.find(delimiter);
+	unsigned int endPos = buffString.find(delimiter);
 	int i = 0;
 
 	// Tokenize the document into words split by the delimiter (" ")
@@ -108,26 +112,73 @@ int main()
 
 
 	Algorithms algs;
-/*
+
+	std::cout << "Running Insertion Sort on an unsorted array" << std::endl;
 	std::string * insertionArray = copyArray(unsortedWords);
 	algs.insertionSort(insertionArray, 5000);
+	algs.printReport(0,100);
 
 	std::cout << std::endl;
 
+	std::cout << "Running Insertion Sort on an already sorted array" << std::endl;
+	algs.insertionSort(insertionArray, 5000);
+	algs.printReport(0,100);
+
+	std::cout << std::endl;
+
+	std::cout << "Running Selection Sort on an unsorted array" << std::endl;
 	std::string * selectionArray = copyArray(unsortedWords);
 	std::string * selectSorted = algs.selectionSort(selectionArray, 5000);
+	algs.printReport(1,100);
+
 	std::cout << std::endl;
+
 	std::cout << "Running Selection Sort on an already sorted array" << std::endl;
 	algs.selectionSort(selectSorted, 5000);
-	printArray(selectSorted);
-*/
+	algs.printReport(1,100);
 
+	std::cout << std::endl;
+
+	std::cout << "Running Merge Sort on an unsorted array" << std::endl;
 	std::string * mergeArray = copyArray(unsortedWords);
 	mergeArray = algs.mergeSort(mergeArray, 5000);
-	printArray(mergeArray);
+	algs.printReport(2, 100);
 
+	std::cout << std::endl;
+
+	//reset our static counters that monitor the recursive algorithms
+	// between successive runnings of the algs
+	Algorithms::staticCompCounter = 0;
+	Algorithms::staticSwapCounter = 0;
+	std::cout << "Running Merge Sort on an already sorted array" << std::endl;
+	mergeArray = algs.mergeSort(mergeArray, 5000);
+	algs.printReport(2, 100);
+
+	std::cout << std::endl;
+
+	Algorithms::staticCompCounter = 0;
+	Algorithms::staticSwapCounter = 0;
+	std::string * quickArray = copyArray(unsortedWords);
+	std::cout << "Running Quick Sort on an unsorted array" << std::endl;
+	quickArray = algs.quickSort(quickArray, 0, 4999);
+	//printArray(quickArray);
+	algs.printReport(3,100);
+
+	std::cout << std::endl;
+
+	Algorithms::staticCompCounter = 0;
+	Algorithms::staticSwapCounter = 0;
+	std::cout << "Running Quick Sort on an already sorted array" << std::endl;
+	quickArray = algs.quickSort(quickArray, 0, 4999);
+	//printArray(quickArray);
+	algs.printReport(3,100);
+
+	// Cleanup, deallocate your used heap memory
+	delete[] insertionArray;
+	delete[] selectionArray;
 	delete[] mergeArray;
-	//delete[] selectionArray;
-	//delete[] insertionArray;
+	delete[] quickArray;
+
+
 	std::cout << "Finished" << std::endl;
 }
