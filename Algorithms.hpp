@@ -143,7 +143,7 @@ std::string * Algorithms::mergeSort(std::string * unsortedWords, int lengthArray
 	std::cout << leftLength << " : is leftLength    " << rightLength << " : is rightLength   "  << std::endl;
 
 	// Will round down
-	int middle = lengthArray / 2;
+	int middle = leftLength;
 	std::cout << middle << " : is the middle" << std::endl;
 	for(int i = 0; i < middle; i++)
 	{
@@ -154,16 +154,14 @@ std::string * Algorithms::mergeSort(std::string * unsortedWords, int lengthArray
 	{
 		right[j - middle] = unsortedWords[j];
 	}
+
+	delete [] unsortedWords; // Delete, because we dont need it anymore
+
 	// TODO Make sure array lengths are right, Double check this
-	left = mergeSort(left, lengthArray - middle - 1); //middle);
+	left = mergeSort(left, middle);
 	right = mergeSort(right, lengthArray - middle);
 
 	return merge(left, right, leftLength, rightLength);
-
-	printReport(2,100);
-
-	return unsortedWords;
-
 }
 
 std::string * Algorithms::merge(std::string * left, std::string * right, int leftLength, int rightLength)
@@ -204,12 +202,3 @@ std::string * Algorithms::merge(std::string * left, std::string * right, int lef
 
 	return resultList;
 }
-
-
-
-
-
-
-
-
-
