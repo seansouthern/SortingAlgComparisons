@@ -6,6 +6,8 @@
 #include <sstream>
 #include <iostream>
 #include <ctype.h>
+#include "Algorithms.hpp"
+
 
 void printArray(std::string * wordArray)
 {
@@ -15,7 +17,7 @@ void printArray(std::string * wordArray)
 	}
 }
 
-std::string * copyArray(std::string wordArray[])
+std::string * copyArray(std::string * wordArray)
 {
 	// We allocate the copied array on heap because we may not have enough room
 	//  in this stack frame.
@@ -28,7 +30,6 @@ std::string * copyArray(std::string wordArray[])
 	return copyOfArray;
 }
 
-
 int main()
 {
 	// Read in our dirty input text for cleaning
@@ -39,7 +40,7 @@ int main()
 
 	// Define the characters we want to strip, mostly non-letter punctuation
 	// Remember to escape quotation mark
-	char chars[] = "\"-,.!;:{}()?\r\t\n";
+	char chars[] = "\"-,.!;:{}_()?\r\t\n";
 
 	// Loop over entire text for each unwanted character
 	for (unsigned int i = 0; i < strlen(chars); ++i)
@@ -88,6 +89,8 @@ int main()
 
 		// There may be more than one space between words, these will be
 		// returned as zero length substrings and we should ignore them
+		// Also ignore single quotations on their own and not part of a
+		// contraction
 		if(token.size() != 0 && token != "'")
 		{
 			// Store the word in our unsorted array
@@ -102,12 +105,17 @@ int main()
 		endPos = buffString.find(delimiter, startPos);
 	}
 
-	//printArray(unsortedWords);
-	std::string * newArray = copyArray(unsortedWords);
-	printArray(newArray);
+	Algorithms algs;
 
-	delete[] newArray;
-	delete[] unsortedWords;
+	std::string * insertionArray = copyArray(unsortedWords);
+	algs.insertionSort(insertionArray, 5000);
+
+	std::string * selectionArray = copyArray(unsortedWords);
+	algs.selectionSort(selectionArray, 5000);
+
+
+	delete[] selectionArray;
+	delete[] insertionArray;
 	std::cout << "Finished" << std::endl;
 }
 
