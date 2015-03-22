@@ -9,7 +9,7 @@ private:
 
 public:
 	void insertionSort	( std::string * unsortedWords, int LengthArray);
-	void selectionSort	( std::string * unsortedWords, int lengthArray);
+	std::string * selectionSort	( std::string * unsortedWords, int lengthArray);
 	void mergeSort		( std::string * unsortedWords, int lengthArray);
 	void quickSort		( std::string * unsortedWords, int lengthArray);
 	int comparisonCounter;
@@ -49,7 +49,6 @@ void Algorithms::printReport( int algUsed, int percentUsed )
 
 void Algorithms::insertionSort ( std::string * unsortedWords, int lengthArray)
 {
-
 	comparisonCounter = 0;
 	swapCounter = 0;
 
@@ -59,18 +58,18 @@ void Algorithms::insertionSort ( std::string * unsortedWords, int lengthArray)
 		j = i;
 		while( j > 0 && unsortedWords[ j - 1 ] > unsortedWords[j])
 		{
-			comparisonCounter+=2;
 			swapStrings(unsortedWords, j, j-1);
 			swapCounter++;
 			j--;
 		}
+		comparisonCounter+=2;
 	}
 	printReport(0, 100);
 }
 
 
 
-void Algorithms::selectionSort(std::string * unsortedWords, int lengthArray)
+std::string * Algorithms::selectionSort(std::string * unsortedWords, int lengthArray)
 {
 	comparisonCounter = 0;
 	swapCounter = 0;
@@ -85,21 +84,33 @@ void Algorithms::selectionSort(std::string * unsortedWords, int lengthArray)
 		{
 			if(unsortedWords[j] < unsortedWords[jMin])
 			{
-				comparisonCounter++;
 				jMin = j;
 			}
+			comparisonCounter++;
 		}
 		if(jMin != j)
 		{
-			comparisonCounter++;
 			swapStrings(unsortedWords, i, jMin);
 			swapCounter++;
 		}
+		comparisonCounter++;
 	}
 	printReport(1, 100);
-
+	return unsortedWords;
 }
 
+
+void Algorithms::mergeSort(std::string * unsortedWords, int lengthArray)
+{
+	comparisonCounter = 0;
+	swapCounter = 0;
+
+
+
+
+	printReport(2,100);
+
+}
 
 
 
