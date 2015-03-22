@@ -50,6 +50,9 @@ void Algorithms::printReport( int algUsed, int percentUsed )
 void Algorithms::insertionSort ( std::string * unsortedWords, int lengthArray)
 {
 
+	comparisonCounter = 0;
+	swapCounter = 0;
+
 	int j;
 	for(int i = 1; i < lengthArray - 1; i++)
 	{
@@ -65,19 +68,35 @@ void Algorithms::insertionSort ( std::string * unsortedWords, int lengthArray)
 	printReport(0, 100);
 }
 
-/*
- * 7. Add a Selection Sort method to your program, and add code that counts the total number of
-comparisons and the total number of swaps. Copy the original unsorted array to the second array and
-call Selection Sort. Display the total number of comparisons and swaps. Verify that your Selection Sort
-implementation works correctly.
- */
 
 
 void Algorithms::selectionSort(std::string * unsortedWords, int lengthArray)
 {
+	comparisonCounter = 0;
+	swapCounter = 0;
 
-
-
+	int i;
+	int j;
+	int jMin;
+	for(i = 0 ; i < lengthArray - 1; i++)
+	{
+		jMin = i;
+		for(j = i+1; j < lengthArray; j++)
+		{
+			if(unsortedWords[j] < unsortedWords[jMin])
+			{
+				comparisonCounter++;
+				jMin = j;
+			}
+		}
+		if(jMin != j)
+		{
+			comparisonCounter++;
+			swapStrings(unsortedWords, i, jMin);
+			swapCounter++;
+		}
+	}
+	printReport(1, 100);
 
 }
 

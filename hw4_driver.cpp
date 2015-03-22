@@ -108,11 +108,11 @@ int main()
 	Algorithms algs;
 
 	std::string * insertionArray = copyArray(unsortedWords);
-	algs.insertionSort(insertionArray, 5000);
+	//algs.insertionSort(insertionArray, 5000);
 
 	std::string * selectionArray = copyArray(unsortedWords);
 	algs.selectionSort(selectionArray, 5000);
-
+	printArray(selectionArray);
 
 	delete[] selectionArray;
 	delete[] insertionArray;
