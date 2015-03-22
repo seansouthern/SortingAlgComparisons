@@ -123,7 +123,7 @@ int main()
 */
 
 	std::string * mergeArray = copyArray(unsortedWords);
-	algs.mergeSort(mergeArray, 5000);
+	mergeArray = algs.mergeSort(mergeArray, 5000);
 	printArray(mergeArray);
 
 	delete[] mergeArray;
@@ -131,4 +131,3 @@ int main()
 	//delete[] insertionArray;
 	std::cout << "Finished" << std::endl;
 }
-
