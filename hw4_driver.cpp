@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include <ctype.h>
+
 #include "Algorithms.hpp"
 
 
@@ -105,17 +106,29 @@ int main()
 		endPos = buffString.find(delimiter, startPos);
 	}
 
-	Algorithms algs;
 
+	Algorithms algs;
+/*
 	std::string * insertionArray = copyArray(unsortedWords);
-	//algs.insertionSort(insertionArray, 5000);
+	algs.insertionSort(insertionArray, 5000);
+
+	std::cout << std::endl;
 
 	std::string * selectionArray = copyArray(unsortedWords);
-	algs.selectionSort(selectionArray, 5000);
-	printArray(selectionArray);
+	std::string * selectSorted = algs.selectionSort(selectionArray, 5000);
+	std::cout << std::endl;
+	std::cout << "Running Selection Sort on an already sorted array" << std::endl;
+	algs.selectionSort(selectSorted, 5000);
+	printArray(selectSorted);
+*/
 
-	delete[] selectionArray;
-	delete[] insertionArray;
+	std::string * mergeArray = copyArray(unsortedWords);
+	algs.mergeSort(mergeArray, 5000);
+	printArray(mergeArray);
+
+	delete[] mergeArray;
+	//delete[] selectionArray;
+	//delete[] insertionArray;
 	std::cout << "Finished" << std::endl;
 }
 
