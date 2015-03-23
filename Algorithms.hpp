@@ -5,7 +5,7 @@ class Algorithms
 {
 private:
 	std::string * 	swapStrings	(std::string * wordArray, int firstIndex, int secondIndex);
-	std::string * 	merge(std::string * left, std::string * right, int leftLength, int rightLength);
+	std::string *	merge(std::string * left, std::string * right, int leftLength, int rightLength);
 	int 			partition(std::string * unsortedWords, int startIndex, int endIndex);
 	int pivot;
 
@@ -17,8 +17,8 @@ public:
 	std::string * quickSort		( std::string * unsortedWords, int startIndex, int endIndex);
 	int comparisonCounter;
 	int swapCounter;
-	static double staticCompCounter;
-	static double staticSwapCounter;
+	static int staticCompCounter;
+	static int staticSwapCounter;
 };
 
 
@@ -63,7 +63,7 @@ std::string * Algorithms::insertionSort ( std::string * unsortedWords, int lengt
 	swapCounter = 0;
 
 	int j;
-	for(int i = 1; i < lengthArray - 1; i++)
+	for(int i = 1; i < lengthArray; i++)
 	{
 		j = i;
 		while( j > 0 && unsortedWords[ j - 1 ] > unsortedWords[j])
@@ -72,7 +72,7 @@ std::string * Algorithms::insertionSort ( std::string * unsortedWords, int lengt
 			swapCounter++;
 			j--;
 		}
-		comparisonCounter+=2;
+		comparisonCounter++;
 	}
 	return unsortedWords;
 }
@@ -103,7 +103,7 @@ std::string * Algorithms::selectionSort(std::string * unsortedWords, int lengthA
 			swapStrings(unsortedWords, i, jMin);
 			swapCounter++;
 		}
-		comparisonCounter++;
+		//comparisonCounter++;
 	}
 	return unsortedWords;
 }
@@ -133,8 +133,6 @@ std::string * Algorithms::mergeSort(std::string * unsortedWords, int lengthArray
 		right[j - middle] = unsortedWords[j];
 	}
 
-	// Delete, because we don't need it anymore
-	delete [] unsortedWords;
 
 	left = mergeSort(left, middle);
 	right = mergeSort(right, lengthArray - middle);

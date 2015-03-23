@@ -8,35 +8,18 @@
 #include <ctype.h>
 
 #include "Algorithms.hpp"
+#include "Utils.hpp"
 
 // We need to initialize two static counters for recording the work
 //  done by the recursive sort algorithms.
-double Algorithms::staticCompCounter = 0;
-double Algorithms::staticSwapCounter = 0;
+int Algorithms::staticCompCounter = 0;
+int Algorithms::staticSwapCounter = 0;
 
-void printArray(std::string * wordArray)
-{
-	for(int i = 0; i < 5000; i++)
-	{
-		std::cout << i << " : " <<  wordArray[i] << std::endl;
-	}
-}
 
-std::string * copyArray(std::string * wordArray)
-{
-	// We allocate the copied array on heap because we may not have enough room
-	//  in this stack frame.
-	std::string * copyOfArray = new std::string[5000];
-	//Straight copy from original array to the next
-	for(int x = 0; x < 5000; x++)
-	{
-		copyOfArray[x] = wordArray[x];
-	}
-	return copyOfArray;
-}
 
 int main()
 {
+
 	// Read in our dirty input text for cleaning
 	std::ifstream inputText("input.txt");
 	std::stringstream buffer;
@@ -112,9 +95,9 @@ int main()
 
 
 	Algorithms algs;
-
+/*
 	std::cout << "Running Insertion Sort on an unsorted array" << std::endl;
-	std::string * insertionArray = copyArray(unsortedWords);
+	std::string * insertionArray = copyArray(unsortedWords, 5000);
 	algs.insertionSort(insertionArray, 5000);
 	algs.printReport(0,100);
 
@@ -127,7 +110,7 @@ int main()
 	std::cout << std::endl;
 
 	std::cout << "Running Selection Sort on an unsorted array" << std::endl;
-	std::string * selectionArray = copyArray(unsortedWords);
+	std::string * selectionArray = copyArray(unsortedWords, 5000);
 	std::string * selectSorted = algs.selectionSort(selectionArray, 5000);
 	algs.printReport(1,100);
 
@@ -136,11 +119,13 @@ int main()
 	std::cout << "Running Selection Sort on an already sorted array" << std::endl;
 	algs.selectionSort(selectSorted, 5000);
 	algs.printReport(1,100);
-
+*/
 	std::cout << std::endl;
 
+	Algorithms::staticCompCounter = 0;
+	Algorithms::staticSwapCounter = 0;
 	std::cout << "Running Merge Sort on an unsorted array" << std::endl;
-	std::string * mergeArray = copyArray(unsortedWords);
+	std::string * mergeArray = copyArray(unsortedWords, 5000);
 	mergeArray = algs.mergeSort(mergeArray, 5000);
 	algs.printReport(2, 100);
 
@@ -156,28 +141,139 @@ int main()
 
 	std::cout << std::endl;
 
+
+
 	Algorithms::staticCompCounter = 0;
 	Algorithms::staticSwapCounter = 0;
-	std::string * quickArray = copyArray(unsortedWords);
+	std::string * quickArray = copyArray(unsortedWords, 5000);
+	//printArray(quickArray, 5000);
 	std::cout << "Running Quick Sort on an unsorted array" << std::endl;
 	quickArray = algs.quickSort(quickArray, 0, 4999);
-	//printArray(quickArray);
 	algs.printReport(3,100);
 
 	std::cout << std::endl;
 
 	Algorithms::staticCompCounter = 0;
 	Algorithms::staticSwapCounter = 0;
+	//printArray(quickArray, 5000);
 	std::cout << "Running Quick Sort on an already sorted array" << std::endl;
 	quickArray = algs.quickSort(quickArray, 0, 4999);
-	//printArray(quickArray);
 	algs.printReport(3,100);
 
+	std::cout << std::endl;
+
+	/*
+	 *
+	 * 12. Repeat the above steps 1-11 for arrays of size 10, 50, 100, 1000 and 5000 strings. In addition, create test
+files that have the first 25%, 50% and 75% of words already sorted. Rerun the above steps and record
+the algorithms' runtimes (number of comparisons). Fill out the table below, plot it as a graph, and write
+one (1) paragraph what you learned/observed. Submit this write-up as a pdf file with your code – name
+this file Analysis.pdf.
+Runtimes
+In
+	 */
+
+	std::string * unsortedWords5000 = 	copyArray(unsortedWords, 5000);
+	std::string * unsortedWords1000 =	copyArray(unsortedWords, 1000);
+	std::string * unsortedWords100	=	copyArray(unsortedWords, 100);
+	std::string * unsortedWords50	=	copyArray(unsortedWords, 50);
+	std::string * unsortedWords10	=	copyArray(unsortedWords, 10);
+
+
+	// Total dimensions are [4 PreSortLevels][5 SizesOfInput][4 SortingAlgs][2 AlgorithmWorkCounters]
+
+	// 0pc Sorted Lists, size 5000 1000 100 50 10
+	int * unsorted5000longResults = runAllAlgs(unsortedWords5000, 5000);
+	int * unsorted1000longResults = runAllAlgs(unsortedWords1000, 1000);
+	int * unsorted100longResults = runAllAlgs(unsortedWords100, 100);
+	int * unsorted50longResults = runAllAlgs(unsortedWords50, 50);
+	int * unsorted10longResults = runAllAlgs(unsortedWords10, 10);
+
+
+	// 25pc Sorted Lists, size 5000 1000 100 50 10
+	std::string * semi25pc5000long = generate25pcSortedLists(unsortedWords5000, 5000);
+	std::string * semi25pc1000long = generate25pcSortedLists(unsortedWords1000, 1000);
+	std::string * semi25pc100long = generate25pcSortedLists(unsortedWords100, 100);
+	std::string * semi25pc50long = generate25pcSortedLists(unsortedWords50, 50);
+	std::string * semi25pc10long = generate25pcSortedLists(unsortedWords10, 10);
+
+	int * semi25pc5000longResults = runAllAlgs(semi25pc5000long, 5000);
+	int * semi25pc1000longResults = runAllAlgs(semi25pc1000long, 1000);
+	int * semi25pc100longResults = runAllAlgs(semi25pc100long, 100);
+	int * semi25pc50longResults = runAllAlgs(semi25pc50long, 50);
+	int * semi25pc10longResults = runAllAlgs(semi25pc10long, 10);
+
+	// 50pc Sorted Lists, size 5000 1000 100 50 10
+	std::string * semi50pc5000long = generate50pcSortedLists(unsortedWords5000, 5000);
+	std::string * semi50pc1000long = generate50pcSortedLists(unsortedWords1000, 1000);
+	std::string * semi50pc100long = generate50pcSortedLists(unsortedWords100, 100);
+	std::string * semi50pc50long = generate50pcSortedLists(unsortedWords50, 50);
+	std::string * semi50pc10long = generate50pcSortedLists(unsortedWords10, 10);
+
+	int * semi50pc5000longResults = runAllAlgs(semi50pc5000long, 5000);
+	int * semi50pc1000longResults = runAllAlgs(semi50pc1000long, 1000);
+	int * semi50pc100longResults = runAllAlgs(semi50pc100long, 100);
+	int * semi50pc10longResults = runAllAlgs(semi50pc10long, 10);
+	int * semi50pc50longResults = runAllAlgs(semi50pc50long, 50);
+
+	// 75pc Sorted Lists, size 5000 1000 100 50 10
+	std::string * semi75pc5000long = generate75pcSortedLists(unsortedWords5000, 5000);
+	std::string * semi75pc1000long = generate75pcSortedLists(unsortedWords1000, 1000);
+	std::string * semi75pc100long = generate75pcSortedLists(unsortedWords100, 100);
+	std::string * semi75pc50long = generate75pcSortedLists(unsortedWords50, 50);
+	std::string * semi75pc10long = generate75pcSortedLists(unsortedWords10, 10);
+
+	int * semi75pc5000longResults = runAllAlgs(semi75pc5000long, 5000);
+	int * semi75pc1000longResults = runAllAlgs(semi75pc1000long, 1000);
+	int * semi75pc100longResults = runAllAlgs(semi75pc100long, 100);
+	int * semi75pc50longResults = runAllAlgs(semi75pc50long, 50);
+	int * semi75pc10longResults = runAllAlgs(semi75pc10long, 10);
+
+	std::cout << "Results" << std::endl;
+
+
+	std::cout << std::setw(30) << "Insertion Sort" << std::setw(30) << "Selection Sort" <<std::setw(30) << "Merge Sort" <<std::setw(30) <<  "Quick Sort" <<  std::endl;
+
+
+	printArrayLine(unsorted5000longResults, 8);
+	printArrayLine(unsorted1000longResults, 8);
+	printArrayLine(unsorted100longResults, 8);
+	printArrayLine(unsorted50longResults, 8);
+	printArrayLine(unsorted10longResults, 8);
+
+	printArrayLine(semi25pc5000longResults, 8);
+	printArrayLine(semi25pc1000longResults, 8);
+	printArrayLine(semi25pc100longResults, 8);
+	printArrayLine(semi25pc50longResults, 8);
+	printArrayLine(semi25pc10longResults, 8);
+
+	printArrayLine(semi50pc5000longResults, 8);
+	printArrayLine(semi50pc1000longResults, 8);
+	printArrayLine(semi50pc100longResults, 8);
+	printArrayLine(semi50pc50longResults, 8);
+	printArrayLine(semi50pc10longResults, 8);
+
+	printArrayLine(semi75pc5000longResults, 8);
+	printArrayLine(semi75pc1000longResults, 8);
+	printArrayLine(semi75pc100longResults, 8);
+	printArrayLine(semi75pc50longResults, 8);
+	printArrayLine(semi75pc10longResults, 8);
+
+
+
 	// Cleanup, deallocate your used heap memory
-	delete[] insertionArray;
-	delete[] selectionArray;
-	delete[] mergeArray;
-	delete[] quickArray;
+	//delete[] insertionArray;
+	//delete[] selectionArray;
+	//delete[] mergeArray;
+	//delete[] quickArray;
+
+
+
+	delete[] unsortedWords5000;
+	delete[] unsortedWords1000;
+	delete[] unsortedWords100;
+	delete[] unsortedWords50;
+	delete[] unsortedWords10;
 
 
 	std::cout << "Finished" << std::endl;
